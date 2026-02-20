@@ -14,7 +14,7 @@
 
       /* Navbar Styles */
       .navbar-aquacheck {
-        background: linear-gradient(135deg, #1a73e8, #0d47a1);
+        background: linear-gradient(135deg, #10b981, #047857);
         padding: 0.8rem 0;
         position: fixed;
         top: 0;
@@ -132,7 +132,7 @@
       }
 
       .chatbot-header {
-        background: linear-gradient(135deg, #1a73e8, #0d47a1);
+         background: linear-gradient(135deg, #10b981, #047857);
         padding: 20px;
         color: white;
         text-align: center;
@@ -259,7 +259,7 @@
       }
 
       .chatbot-input button {
-        background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+         background: linear-gradient(135deg, #10b981 0%, #047857 100%);
         border: none;
         color: white;
         padding: 0 20px;
