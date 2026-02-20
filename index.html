@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AirCek</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-aquacheck">
+      <div class="container">
+        <a class="navbar-brand" href="#beranda">
+          <div class="brand-icon">
+            <i class="fas fa-tint"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-main">AirCek</span>
+          </div>
+        </a>
+
+      <button class="navbar-toggler icon-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+  <span class="navbar-toggler-icon"></span>
+</button>
+
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="#beranda">
+                <i class="fas fa-home me-1"></i> Beranda
+              </a>
+            </li>
+            <li class="nav-item">
+  <a class="nav-link" href="#iot">
+    <i class="fas fa-microchip me-1"></i> IoT Dashboard
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#ai-dashboard">
+    <i class="fas fa-brain me-1"></i> AI Dashboard
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#laporan">
+    <i class="fas fa-clipboard-list me-1"></i> Laporan
+  </a>
+</li>
+            <li class="nav-item">
+              <a class="nav-link" href="#history">
+                <i class="fas fa-history me-1"></i> Riwayat
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#solusi">
+                <i class="fas fa-filter me-1"></i> Solusi Air
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#tentang">
+                <i class="fas fa-info-circle me-1"></i> Tentang
+              </a>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- SECTION BERANDA -->
+    <section id="beranda" class="container-fluid pt-5">
+      <div class="row align-items-start">
+        <div class="col-lg-6 mb-4">
+          <div class="chatbot-card">
+            <div class="chatbot-header">
+              <div class="chatbot-title">
+                <i class="fas fa-robot me-2"></i>AIR.ai
+              </div>
+            </div>
+
+            <div class="chatbot-body" id="chatBody">
+              <div class="bubble bot">
+                Halo 👋<br />
+                Saya <b>AIR.ai</b>, asisten pintar untuk analisis kualitas air
+                minum.<br />
+                Silakan tanyakan seputar kualitas air Anda!
+              </div>
+
+              <div class="bubble bot">
+                <b>Contoh pertanyaan:</b><br />
+                • Apakah pH 6 aman untuk diminum?<br />
+                • Air layak minum itu seperti apa?<br />
+                • TDS 350 ppm apakah baik?
+              </div>
+            </div>
+
+            <div class="chatbot-input">
+              <input
+                type="text"
+                id="chatInput"
+                placeholder="Ketik pertanyaan Anda di sini..."
+              />
+              <button onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="ai-info-card">
+            <h4><i class="fas fa-lightbulb me-2"></i>Kegunaan AIR.ai</h4>
+            <ul>
+              <li>Menilai apakah air layak dikonsumsi</li>
+              <li>Menjelaskan arti nilai pH & TDS</li>
+              <li>Menjawab pertanyaan tentang air saja</li>
+              <li>Memberi solusi jika air tidak memenuhi standar</li>
+              <li>Analisis foto kertas pH secara otomatis</li>
+            </ul>
+
+            <div class="ai-note">
+              <strong
+                ><i class="fas fa-check-circle me-2"></i>Standar Umum Air
+                Minum:</strong
+              ><br />
+              <div class="mt-2">
+                <i class="fas fa-flask me-2"></i>pH ideal: <b>6,5 – 8,5</b
+                ><br />
+                <i class="fas fa-water me-2"></i>TDS aman: <b>&lt; 300 ppm</b>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <h5 class="mb-3">
+              <i class="fas fa-camera me-2"></i>Upload Foto Uji Air
+            </h5>
+
+            <div class="upload-box">
+              <input type="file" id="imageInput" accept="image/*" hidden />
+
+              <div
+                class="upload-area"
+                onclick="document.getElementById('imageInput').click()"
+              >
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p class="mb-1"><strong>Klik untuk upload foto</strong></p>
+                <small>Format: JPG, PNG (Max 5MB)</small>
+              </div>
+
+              <div id="imagePreview" class="image-preview d-none">
+                <img id="previewImg" src="" alt="Preview" />
+                <button
+                  class="btn btn-danger btn-sm mt-3"
+                  onclick="removeImage()"
+                >
+                  <i class="fas fa-trash me-1"></i> Hapus Gambar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+<!-- SECTION IoT DASHBOARD -->
+<section id="iot" class="container">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-microchip me-2"></i>IoT Dashboard
+    </h2>
+    <p class="section-subtitle">
+      Monitoring real-time pH & TDS dari perangkat IoT
+    </p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm" style="border-radius: 18px;">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">
+              <i class="fas fa-wifi me-2 text-primary"></i>Status Koneksi
+            </h5>
+            <span id="mqttStatusBadge" class="badge bg-secondary">DISCONNECTED</span>
+          </div>
+
+          <hr>
+
+          <div class="small text-muted">Broker</div>
+          <div id="mqttBrokerText" class="fw-semibold">-</div>
+
+          <div class="mt-3 small text-muted">Device ID</div>
+          <div class="fw-semibold">
+            <span id="deviceIdText">sofia_esp32</span>
+          </div>
+
+          <div class="mt-3 small text-muted">Update terakhir</div>
+          <div class="fw-semibold" id="lastUpdateText">-</div>
+
+          <button class="btn btn-outline-primary w-100 mt-4" onclick="reconnectMQTT()">
+            <i class="fas fa-plug me-2"></i>Reconnect IoT
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm" style="border-radius: 18px;">
+            <div class="card-body p-4">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="text-muted small">pH (real-time)</div>
+                  <div class="display-6 fw-bold text-primary" id="phRealtime">--</div>
+                </div>
+                <span id="phBadge" class="badge bg-secondary">-</span>
+              </div>
+              <div class="small text-muted mt-2">Standar: 6,5 – 8,5</div>
+              <div class="mt-3">
+                <canvas id="phChart" height="120"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm" style="border-radius: 18px;">
+            <div class="card-body p-4">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="text-muted small">TDS (real-time)</div>
+                  <div class="display-6 fw-bold text-primary">
+                    <span id="tdsRealtime">--</span>
+                    <span class="fs-6 text-muted">ppm</span>
+                  </div>
+                </div>
+                <span id="tdsBadge" class="badge bg-secondary">-</span>
+              </div>
+              <div class="small text-muted mt-2">Acuan umum: &lt; 300 ppm (ideal), &lt; 500 ppm (maks)</div>
+              <div class="mt-3">
+                <canvas id="tdsChart" height="120"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="alert alert-info" style="border-radius: 16px; border-left: 5px solid #1a73e8;">
+            <div class="d-flex align-items-start">
+              <i class="fas fa-info-circle me-2 mt-1"></i>
+              <div>
+                <div class="fw-semibold">Format data IoT</div>
+                <div class="small mb-0">
+                  Disarankan publish MQTT dalam JSON, contoh:
+                  <code>{"deviceId":"sofia_esp32","ph":7.2,"tds":280,"lat":-6.2,"lng":106.8,"ts":1700000000}</code>
+                  (kamu bisa sesuaikan topic & payload di <code>script.js</code>).
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- SECTION AI DASHBOARD -->
+<section id="ai-dashboard" class="container">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-brain me-2"></i>AI Dashboard
+    </h2>
+    <p class="section-subtitle">
+      Ringkasan analisis otomatis berdasarkan data IoT / input pengguna
+    </p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <div class="card border-0 shadow-sm" style="border-radius: 18px;">
+        <div class="card-body p-4">
+          <h5 class="mb-3"><i class="fas fa-bolt me-2 text-primary"></i>Snapshot Analisis</h5>
+
+          <div class="d-flex justify-content-between">
+            <div class="text-muted">Status</div>
+            <div class="fw-bold" id="aiStatusText">-</div>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <div class="text-muted">Skor</div>
+            <div class="fw-bold" id="aiScoreText">-</div>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <div class="text-muted">Keyakinan</div>
+            <div class="fw-bold" id="aiConfidenceText">-</div>
+          </div>
+
+          <hr>
+
+          <div class="text-muted small mb-2">Parameter terakhir</div>
+          <div id="aiLastParams" class="small" style="line-height:1.7;">-</div>
+
+          <button class="btn btn-primary w-100 mt-4" onclick="runAIFromLatestIoT()">
+            <i class="fas fa-magic me-2"></i>Analisis dari Data IoT Terakhir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm" style="border-radius: 18px;">
+        <div class="card-body p-4">
+          <h5 class="mb-3"><i class="fas fa-clipboard-check me-2 text-primary"></i>Output AI Logic</h5>
+          <div id="aiLogicOutput" class="p-3" style="background:#f8f9fa;border-radius:14px;min-height:220px;">
+            <div class="text-muted">Belum ada analisis. Jalankan analisis dari IoT atau gunakan chat AIR.ai.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- SECTION LAPORAN -->
+<section id="laporan" class="container">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-clipboard-list me-2"></i>Laporan Kondisi Air
+    </h2>
+    <p class="section-subtitle">
+      Kirim laporan berbasis data IoT + lokasi GPS ke database (untuk admin)
+    </p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm" style="border-radius: 18px;">
+        <div class="card-body p-4">
+          <h5 class="mb-3"><i class="fas fa-pen-to-square me-2 text-primary"></i>Form Laporan</h5>
+
+          <form id="reportForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Device ID</label>
+                <input id="reportDeviceId" class="form-control" value="sofia_esp32" required />
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">pH</label>
+                <input id="reportPH" type="number" step="0.01" class="form-control" placeholder="contoh: 7.2" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">TDS (ppm)</label>
+                <input id="reportTDS" type="number" step="1" class="form-control" placeholder="contoh: 280" />
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Kondisi fisik (opsional)</label>
+                <input id="reportCondition" class="form-control" placeholder="contoh: jernih, tidak berbau" />
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Catatan</label>
+                <textarea id="reportNotes" class="form-control" rows="3" placeholder="tulis kondisi sekitar, sumber air, keluhan, dsb"></textarea>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Latitude</label>
+                <input id="reportLat" class="form-control" placeholder="-6.2" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Longitude</label>
+                <input id="reportLng" class="form-control" placeholder="106.8" />
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4 flex-wrap">
+              <button type="button" class="btn btn-outline-primary" onclick="fillGPS()">
+                <i class="fas fa-location-crosshairs me-2"></i>Ambil GPS Otomatis
+              </button>
+
+              <button type="button" class="btn btn-outline-secondary" onclick="fillFromIoT()">
+                <i class="fas fa-download me-2"></i>Isi dari Data IoT
+              </button>
+
+              <button type="submit" class="btn btn-primary ms-auto">
+                <i class="fas fa-paper-plane me-2"></i>Kirim ke Admin (Database)
+              </button>
+            </div>
+
+            <div class="mt-3 small text-muted">
+              Endpoint backend contoh: <code>POST /api/water-reports</code> (nanti admin membaca dari database).
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card border-0 shadow-sm" style="border-radius: 18px;">
+        <div class="card-body p-4">
+          <h5 class="mb-3"><i class="fas fa-shield-halved me-2 text-primary"></i>Validasi & Ringkasan</h5>
+          <div id="reportPreview" class="p-3" style="background:#f8f9fa;border-radius:14px;min-height:240px;">
+            <div class="text-muted">Preview laporan akan tampil di sini sebelum dikirim.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- SECTION HISTORY -->
+    <section id="history" class="container">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fas fa-history me-2"></i>Riwayat Analisis
+        </h2>
+        <p class="section-subtitle">Lihat hasil analisis air Anda sebelumnya</p>
+      </div>
+
+      <div id="historyContainer">
+        <div class="text-center text-muted">
+          <i class="fas fa-inbox fa-3x mb-3 floating"></i>
+          <p>
+            Belum ada riwayat analisis. Mulai chat dengan AIR.ai untuk menyimpan
+            riwayat!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION SOLUSI AIR -->
+    <section id="solusi" class="container">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fas fa-filter me-2"></i>Solusi Pengolahan Air
+        </h2>
+        <p class="section-subtitle">
+          Berbagai metode untuk meningkatkan kualitas air minum
+        </p>
+      </div>
+
+      <div class="solution-grid">
+        <div class="solution-card">
+          <div class="solution-icon">
+            <i class="fas fa-sync-alt"></i>
+          </div>
+          <h4 class="solution-title">Reverse Osmosis (RO)</h4>
+          <p>
+            <strong>Fungsi:</strong> Menyaring hingga 99% kontaminan termasuk
+            TDS, logam berat, dan bakteri.
+          </p>
+          <p>
+            <strong>Cocok untuk:</strong> Air dengan TDS sangat tinggi (>500
+            ppm)
+          </p>
+          <p><strong>Keunggulan:</strong></p>
+          <ul>
+            <li>Efektif menghilangkan hampir semua kontaminan</li>
+            <li>Menghasilkan air sangat murni</li>
+            <li>Menghilangkan rasa dan bau</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <i class="fas fa-atom"></i>
+          </div>
+          <h4 class="solution-title">Filter Karbon Aktif</h4>
+          <p>
+            <strong>Fungsi:</strong> Menyerap klorin, bau, rasa tidak enak, dan
+            zat organik.
+          </p>
+          <p>
+            <strong>Cocok untuk:</strong> Air PDAM dengan bau klorin atau rasa
+            tidak enak
+          </p>
+          <p><strong>Keunggulan:</strong></p>
+          <ul>
+            <li>Menghilangkan bau dan rasa klorin</li>
+            <li>Harga terjangkau</li>
+            <li>Mudah perawatan</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <i class="fas fa-layer-group"></i>
+          </div>
+          <h4 class="solution-title">Filter Sedimentasi</h4>
+          <p>
+            <strong>Fungsi:</strong> Menyaring partikel kasar, lumpur, pasir,
+            dan kekeruhan.
+          </p>
+          <p>
+            <strong>Cocok untuk:</strong> Air keruh dengan partikel tersuspensi
+          </p>
+          <p><strong>Keunggulan:</strong></p>
+          <ul>
+            <li>Menjerihkan air secara fisik</li>
+            <li>Melindungi filter lain dari cepat kotor</li>
+            <li>Biaya operasional rendah</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <i class="fas fa-flask"></i>
+          </div>
+          <h4 class="solution-title">Penetral pH</h4>
+          <p>
+            <strong>Fungsi:</strong> Menyeimbangkan pH air yang terlalu asam
+            atau basa.
+          </p>
+          <p>
+            <strong>Cocok untuk:</strong> Air dengan pH di luar rentang 6.5-8.5
+          </p>
+          <p><strong>Keunggulan:</strong></p>
+          <ul>
+            <li>Menormalkan pH secara otomatis</li>
+            <li>Mencegah korosi pipa</li>
+            <li>Meningkatkan rasa air</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <i class="fas fa-viruses"></i>
+          </div>
+          <h4 class="solution-title">UV Sterilizer</h4>
+          <p>
+            <strong>Fungsi:</strong> Membunuh bakteri, virus, dan mikroorganisme
+            berbahaya.
+          </p>
+          <p>
+            <strong>Cocok untuk:</strong> Air sumur atau air yang berisiko
+            kontaminasi biologis
+          </p>
+          <p><strong>Keunggulan:</strong></p>
+          <ul>
+            <li>Disinfeksi tanpa bahan kimia</li>
+            <li>Tidak mengubah rasa air</li>
+            <li>Efektif 99.99% membunuh patogen</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <i class="fas fa-compress-arrows-alt"></i>
+          </div>
+          <h4 class="solution-title">Water Softener</h4>
+          <p>
+            <strong>Fungsi:</strong> Mengurangi kesadahan air (kalsium &
+            magnesium)
+          </p>
+          <p><strong>Cocok untuk:</strong> Air sadah yang menyebabkan kerak</p>
+          <p><strong>Keunggulan:</strong></p>
+          <ul>
+            <li>Mencegah kerak pada peralatan</li>
+            <li>Membuat air lebih lembut untuk kulit</li>
+            <li>Hemat sabun dan detergen</li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="alert alert-info mt-5"
+        style="border-radius: 16px; border-left: 5px solid #1a73e8"
+      >
+        <h5><i class="fas fa-info-circle me-2"></i>Tips Memilih Solusi</h5>
+        <p class="mb-0">
+          Pilih solusi berdasarkan hasil analisis air Anda. Untuk masalah
+          kompleks, kombinasikan beberapa metode untuk hasil optimal.
+          Konsultasikan dengan ahli untuk sistem custom.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION TENTANG -->
+    <section id="tentang" class="container">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fas fa-info-circle me-2"></i>Tentang AirCek
+        </h2>
+        <p class="section-subtitle">
+          Platform cerdas untuk analisis kualitas air berbasis AI
+        </p>
+      </div>
+
+      <div class="about-section">
+        <div class="row">
+          <div class="col-lg-6 mb-4">
+            <h3 class="text-primary mb-4">
+              <i class="fas fa-bullseye me-2"></i>Misi Kami
+            </h3>
+            <p style="font-size: 1.1rem; line-height: 1.8">
+              AirCek hadir untuk memudahkan masyarakat dalam memahami dan
+              menganalisis kualitas air minum mereka. Dengan teknologi AI yang
+              canggih, kami memberikan informasi akurat dan solusi praktis untuk
+              memastikan air yang Anda konsumsi aman dan sehat.
+            </p>
+
+            <div class="mt-4">
+              <div class="feature-box">
+                <i class="fas fa-robot feature-icon"></i>
+                <strong>AI-Powered Analysis</strong>
+                <p class="mb-0 mt-2">
+                  Analisis instan menggunakan kecerdasan buatan untuk hasil yang
+                  akurat dan cepat
+                </p>
+              </div>
+
+              <div class="feature-box">
+                <i class="fas fa-chart-line feature-icon"></i>
+                <strong>Data-Driven Insights</strong>
+                <p class="mb-0 mt-2">
+                  Keputusan berdasarkan standar WHO dan Permenkes RI untuk
+                  keamanan terjamin
+                </p>
+              </div>
+
+              <div class="feature-box">
+                <i class="fas fa-mobile-alt feature-icon"></i>
+                <strong>Easy to Use</strong>
+                <p class="mb-0 mt-2">
+                  Interface intuitif yang mudah digunakan oleh siapa saja, kapan
+                  saja
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h3 class="text-primary mb-4">
+              <i class="fas fa-cogs me-2"></i>Fitur Unggulan
+            </h3>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div
+                  class="card border-0 shadow-sm h-100"
+                  style="border-radius: 16px"
+                >
+                  <div class="card-body text-center p-4">
+                    <i class="fas fa-comments fa-3x text-primary mb-3"></i>
+                    <h5>Chatbot Interaktif</h5>
+                    <p class="text-muted small">
+                      Tanya jawab real-time dengan AI
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div
+                  class="card border-0 shadow-sm h-100"
+                  style="border-radius: 16px"
+                >
+                  <div class="card-body text-center p-4">
+                    <i class="fas fa-camera fa-3x text-primary mb-3"></i>
+                    <h5>Analisis Foto pH</h5>
+                    <p class="text-muted small">
+                      Upload foto untuk deteksi otomatis
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div
+                  class="card border-0 shadow-sm h-100"
+                  style="border-radius: 16px"
+                >
+                  <div class="card-body text-center p-4">
+                    <i class="fas fa-history fa-3x text-primary mb-3"></i>
+                    <h5>Riwayat Lengkap</h5>
+                    <p class="text-muted small">Lacak semua analisis Anda</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div
+                  class="card border-0 shadow-sm h-100"
+                  style="border-radius: 16px"
+                >
+                  <div class="card-body text-center p-4">
+                    <i class="fas fa-lightbulb fa-3x text-primary mb-3"></i>
+                    <h5>Solusi Praktis</h5>
+                    <p class="text-muted small">
+                      Rekomendasi berdasarkan masalah
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 p-4 bg-light" style="border-radius: 16px">
+              <h5 class="text-primary mb-3">
+                <i class="fas fa-shield-alt me-2"></i>Standar Referensi
+              </h5>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2">
+                  <i class="fas fa-check text-success me-2"></i>WHO Guidelines
+                  for Drinking Water Quality
+                </li>
+                <li class="mb-2">
+                  <i class="fas fa-check text-success me-2"></i>Permenkes RI No.
+                  492/2010
+                </li>
+                <li class="mb-2">
+                  <i class="fas fa-check text-success me-2"></i>SNI 01-3553-2015
+                </li>
+                <li class="mb-0">
+                  <i class="fas fa-check text-success me-2"></i>EPA Safe
+                  Drinking Water Standards
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+      <div class="container">
+        <p class="mb-2">
+          <i class="fas fa-tint me-2"></i><strong>AirCek</strong> - Sistem
+          Cerdas Analisis Kualitas Air
+        </p>
+        <p class="small mb-0">
+          © 2025 AirCek. Didukung oleh teknologi pengembangan AI untuk air yang lebih sehat.
+        </p>
+      </div>
+    </footer>
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+     <script src="script.js"></script>
+  </body>
+</html>
