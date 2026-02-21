@@ -1,5 +1,4 @@
- 
-      * {
+* {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -8,7 +7,7 @@
       body {
         padding-top: 80px;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);
         overflow-x: hidden;
       }
 
@@ -20,13 +19,13 @@
         top: 0;
         width: 100%;
         z-index: 1000;
-        box-shadow: 0 4px 20px rgba(26, 115, 232, 0.3);
+        box-shadow: 0 4px 20px rgba(4, 120, 87, 0.3);
         transition: all 0.3s ease;
       }
 
       .navbar-aquacheck.scrolled {
         padding: 0.5rem 0;
-        box-shadow: 0 6px 30px rgba(26, 115, 232, 0.4);
+        box-shadow: 0 6px 30px rgba(4, 120, 87, 0.4);
       }
 
       .navbar-brand {
@@ -43,7 +42,7 @@
 
       .brand-icon {
         background: white;
-        color: #1a73e8;
+        color: #10b981;
         width: 42px;
         height: 42px;
         border-radius: 50%;
@@ -132,7 +131,7 @@
       }
 
       .chatbot-header {
-         background: linear-gradient(135deg, #10b981, #047857);
+        background: linear-gradient(135deg, #10b981, #047857);
         padding: 20px;
         color: white;
         text-align: center;
@@ -176,7 +175,7 @@
       .chatbot-body {
         height: 400px;
         padding: 20px;
-        background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+        background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
         overflow-y: auto;
         display: flex;
         flex-direction: column;
@@ -193,7 +192,7 @@
       }
 
       .chatbot-body::-webkit-scrollbar-thumb {
-        background: #1a73e8;
+        background: #10b981;
         border-radius: 10px;
       }
 
@@ -219,47 +218,47 @@
       }
 
       .bubble.bot {
-        background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);
-        color: #1a73e8;
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #047857;
         border-bottom-left-radius: 6px;
-        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
       }
 
       .bubble.user {
-        background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+        background: linear-gradient(135deg, #10b981 0%, #047857 100%);
         color: white;
         margin-left: auto;
         border-bottom-right-radius: 6px;
-        box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+        box-shadow: 0 4px 12px rgba(4, 120, 87, 0.3);
       }
 
       .chatbot-input {
         display: flex;
         padding: 16px;
-        border-top: 2px solid #e9ecef;
+        border-top: 2px solid #d1fae5;
         background: #fff;
         gap: 10px;
       }
 
       .chatbot-input input {
         flex: 1;
-        border: 2px solid #e9ecef;
+        border: 2px solid #d1fae5;
         padding: 12px 16px;
         outline: none;
         font-size: 14px;
-        background: #f8f9fa;
+        background: #f0fdf4;
         border-radius: 14px;
         transition: all 0.3s ease;
       }
 
       .chatbot-input input:focus {
-        border-color: #1a73e8;
+        border-color: #10b981;
         background: white;
-        box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
       }
 
       .chatbot-input button {
-         background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+        background: linear-gradient(135deg, #10b981 0%, #047857 100%);
         border: none;
         color: white;
         padding: 0 20px;
@@ -270,7 +269,7 @@
 
       .chatbot-input button:hover {
         transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(26, 115, 232, 0.4);
+        box-shadow: 0 6px 20px rgba(4, 120, 87, 0.4);
       }
 
       /* AI Info Card */
@@ -295,7 +294,7 @@
       }
 
       .ai-info-card h4 {
-        color: #1a73e8;
+        color: #10b981;
         font-weight: 700;
         margin-bottom: 20px;
         position: relative;
@@ -309,7 +308,7 @@
         left: 0;
         width: 60px;
         height: 3px;
-        background: linear-gradient(90deg, #1a73e8, transparent);
+        background: linear-gradient(90deg, #10b981, transparent);
       }
 
       .ai-info-card ul {
@@ -328,11 +327,11 @@
 
       .ai-note {
         margin-top: 20px;
-        background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         padding: 16px;
         border-radius: 16px;
         font-size: 14px;
-        border-left: 4px solid #1a73e8;
+        border-left: 4px solid #10b981;
       }
 
       /* Upload Box */
@@ -342,22 +341,22 @@
       }
 
       .upload-area {
-        border: 3px dashed #1a73e8;
+        border: 3px dashed #10b981;
         border-radius: 18px;
         padding: 30px;
         cursor: pointer;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
         transition: all 0.3s ease;
       }
 
       .upload-area:hover {
-        background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         transform: scale(1.02);
       }
 
       .upload-area i {
         font-size: 42px;
-        color: #1a73e8;
+        color: #10b981;
         margin-bottom: 12px;
         animation: bounce 2s infinite;
       }
@@ -412,7 +411,7 @@
         align-items: center;
         margin-bottom: 15px;
         padding-bottom: 15px;
-        border-bottom: 2px solid #e9ecef;
+        border-bottom: 2px solid #d1fae5;
       }
 
       .history-date {
@@ -428,8 +427,8 @@
       }
 
       .status-layak {
-        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-        color: #155724;
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
       }
 
       .status-tidak-layak {
@@ -462,7 +461,7 @@
         left: 0;
         width: 100%;
         height: 5px;
-        background: linear-gradient(90deg, #1a73e8, #0d47a1);
+        background: linear-gradient(90deg, #10b981, #047857);
         transform: scaleX(0);
         transition: transform 0.4s ease;
       }
@@ -479,20 +478,20 @@
       .solution-icon {
         width: 70px;
         height: 70px;
-        background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: 20px;
-        color: #1a73e8;
+        color: #10b981;
         font-size: 32px;
       }
 
       .solution-title {
         font-size: 1.3rem;
         font-weight: 700;
-        color: #1a73e8;
+        color: #10b981;
         margin-bottom: 15px;
       }
 
@@ -506,11 +505,11 @@
       }
 
       .feature-box {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
         padding: 25px;
         border-radius: 16px;
         margin-bottom: 20px;
-        border-left: 4px solid #1a73e8;
+        border-left: 4px solid #10b981;
         transition: all 0.3s ease;
       }
 
@@ -521,7 +520,7 @@
 
       .feature-icon {
         font-size: 28px;
-        color: #1a73e8;
+        color: #10b981;
         margin-right: 15px;
       }
 
@@ -549,7 +548,7 @@
       .section-title {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #1a73e8;
+        color: #10b981;
         margin-bottom: 15px;
         position: relative;
         display: inline-block;
@@ -563,7 +562,7 @@
         transform: translateX(-50%);
         width: 80px;
         height: 4px;
-        background: linear-gradient(90deg, #1a73e8, #0d47a1);
+        background: linear-gradient(90deg, #10b981, #047857);
         border-radius: 2px;
       }
 
@@ -601,7 +600,7 @@
       .typing-indicator span {
         width: 8px;
         height: 8px;
-        background: #1a73e8;
+        background: #10b981;
         border-radius: 50%;
         animation: typing 1.4s infinite;
       }
@@ -624,54 +623,307 @@
           transform: translateY(-10px);
         }
       }
+
       /* Navbar Toggler Animation */
-.custom-toggler {
-  border: 2px solid rgb(255, 246, 246);
-  border-radius: 12px;
-  padding: 8px 10px;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+      .custom-toggler {
+        border: 2px solid rgb(255, 246, 246);
+        border-radius: 12px;
+        padding: 8px 10px;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+      }
+
+      .custom-toggler.active {
+        transform: rotate(180deg);
+        box-shadow: 0 0 15px rgba(240, 237, 237, 0.6);
+      }
+
+      .custom-toggler .navbar-toggler-icon {
+        transition: transform 0.4s ease;
+      }
+
+      .custom-toggler.active .navbar-toggler-icon {
+        transform: rotate(180deg);
+      }
+
+      /* ICON NAVBAR TOGGLER */
+      .icon-toggler {
+        border: none;
+        background: transparent;
+        padding: 6px;
+      }
+
+      .icon-toggler .navbar-toggler-icon {
+        width: 28px;
+        height: 28px;
+        transition: transform 0.4s ease;
+      }
+
+      .icon-toggler.active .navbar-toggler-icon {
+        transform: rotate(180deg);
+      }
+
+      /* FIX icon hamburger Bootstrap */
+      .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.95)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+      }
+
+      .brand-logo {
+        width: 26px;
+        height: 26px;
+        object-fit: contain;
+        display: block;
+      }
+
+/* ============================================================ */
+/* IoT DASHBOARD — KOMPONEN BARU                                */
+/* ============================================================ */
+
+.iot-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.custom-toggler.active {
-  transform: rotate(180deg);
-  box-shadow: 0 0 15px rgba(240, 237, 237, 0.6);
+.iot-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(16,185,129,0.15);
 }
 
-/* Animasi icon hamburger */
-.custom-toggler .navbar-toggler-icon {
-  transition: transform 0.4s ease;
+.iot-card-header {
+  background: linear-gradient(135deg, #10b981, #047857);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 20px;
+  letter-spacing: 0.3px;
 }
 
-.custom-toggler.active .navbar-toggler-icon {
-  transform: rotate(180deg);
+.iot-card-body {
+  padding: 16px;
 }
-/* ICON NAVBAR TOGGLER */
-.icon-toggler {
+.iot-card-body-sm {
+  padding: 12px 14px;
+}
+
+/* Badge status koneksi */
+.iot-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.iot-badge-on  { background: #d1fae5; color: #065f46; }
+.iot-badge-warn{ background: #fef9c3; color: #78350f; }
+.iot-badge-off { background: #e5e7eb; color: #6b7280; }
+
+/* Baris info koneksi */
+.iot-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #f0fdf4;
+  font-size: 12px;
+}
+.iot-label { color: #6b7280; font-size: 12px; }
+.iot-value  { font-weight: 600; color: #111827; word-break: break-all; text-align: right; max-width: 65%; font-size: 11px; }
+
+/* Tombol reconnect */
+.iot-reconnect-btn {
+  background: linear-gradient(135deg, #10b981, #047857);
+  color: #fff;
   border: none;
-  background: transparent;
-  padding: 6px;
+  padding: 7px 0;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.iot-reconnect-btn:hover {
+  box-shadow: 0 4px 14px rgba(4,120,87,0.35);
+  transform: translateY(-1px);
 }
 
-.icon-toggler .navbar-toggler-icon {
-  width: 28px;
-  height: 28px;
-  transition: transform 0.4s ease;
+/* pH display row — compact */
+.iot-ph-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+.iot-ph-display {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.iot-ph-num {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #064e3b;
+  line-height: 1;
+}
+.iot-ph-unit {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #047857;
+}
+.iot-ph-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.iot-standard-text { font-size: 11px; color: #6b7280; }
+
+
+
+/* Alert info format */
+.iot-info-alert {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border-left: 5px solid #10b981;
+  border-radius: 16px;
+  padding: 16px 20px;
+  font-size: 14px;
+  color: #064e3b;
 }
 
-/* Saat navbar terbuka */
-.icon-toggler.active .navbar-toggler-icon {
-  transform: rotate(180deg);
+/* ============================================================ */
+/* AI DASHBOARD — KOMPONEN BARU                                 */
+/* ============================================================ */
+
+.ai-dash-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-/* FIX icon hamburger Bootstrap */
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.95)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
-.brand-logo{
-  width: 26px;
-  height: 26px;
-  object-fit: contain;
-  display: block;
+.ai-dash-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(16,185,129,0.15);
 }
 
+.ai-dash-header {
+  background: linear-gradient(135deg, #10b981, #047857);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 20px;
+  letter-spacing: 0.3px;
+}
 
-    
+.ai-dash-body {
+  padding: 24px;
+}
+
+/* Lingkaran status */
+.ai-status-badge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.ai-status-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #065f46;
+  transition: all 0.4s ease;
+}
+.ai-status-circle.layak     { background: linear-gradient(135deg, #d1fae5, #6ee7b7); color: #065f46; }
+.ai-status-circle.tidak     { background: linear-gradient(135deg, #fee2e2, #fca5a5); color: #991b1b; }
+.ai-status-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #374151;
+  text-align: center;
+}
+
+/* Baris skor & keyakinan */
+.ai-metric-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #f0fdf4;
+  border-radius: 14px;
+  padding: 14px 10px;
+}
+.ai-metric-item {
+  flex: 1;
+  text-align: center;
+}
+.ai-metric-num  { font-size: 1.8rem; font-weight: 800; color: #047857; line-height: 1; }
+.ai-metric-desc { font-size: 11px; color: #6b7280; margin-top: 4px; }
+.ai-metric-divider {
+  width: 1px;
+  height: 40px;
+  background: #bbf7d0;
+}
+
+/* Box parameter */
+.ai-param-label { font-size: 12px; font-weight: 700; color: #047857; }
+.ai-param-box {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  min-height: 60px;
+}
+
+/* Tombol analisis */
+.ai-run-btn {
+  background: linear-gradient(135deg, #10b981, #047857);
+  color: #fff;
+  border: none;
+  padding: 12px 0;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.ai-run-btn:hover {
+  box-shadow: 0 6px 20px rgba(4,120,87,0.35);
+  transform: translateY(-2px);
+}
+
+/* Box output AI */
+.ai-output-box {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 20px;
+  min-height: 280px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  max-height: 420px;
+}
+.ai-output-placeholder {
+  color: #9ca3af;
+  text-align: center;
+  padding-top: 60px;
+  font-size: 15px;
+  line-height: 1.8;
+}
