@@ -384,9 +384,13 @@ function addToastStyles() {
   document.head.appendChild(style);
 }
 
-// ================= IOT STATE (pH only) =================
+// ================= IOT STATE =================
+// Disesuaikan dengan Arduino:
+// - deviceId   : "GWS_ESP32_01"
+// - field JSON : device, ph, status
+// - topic      : gws/device/GWS_ESP32_01/sensors
 
-let latestIoT = { deviceId:"sofia_esp32", ph:null, lat:null, lng:null, ts:null };
+let latestIoT = { deviceId: "GWS_ESP32_01", ph: null, status: null, ts: null };
 
 function nowLocalID() { return new Date().toLocaleString("id-ID"); }
 
@@ -399,14 +403,23 @@ function setMQTTStatus(status) {
 }
 
 function updateRealtimeCards() {
-  const phEl = document.getElementById("phRealtime");
+  const phEl        = document.getElementById("phRealtime");
   const lastUpdateEl = document.getElementById("lastUpdateText");
-  const phBadge = document.getElementById("phBadge");
+  const phBadge     = document.getElementById("phBadge");
   const phGaugeLabel = document.getElementById("phGaugeLabel");
+  // Tampilkan status dari Arduino langsung
+  const deviceStatusEl = document.getElementById("deviceStatusText");
 
-  if (lastUpdateEl) lastUpdateEl.textContent = latestIoT.ts ? nowLocalID() : "-";
-  if (phEl) phEl.textContent = latestIoT.ph ?? "--";
-  if (phGaugeLabel) phGaugeLabel.textContent = latestIoT.ph ?? "--";
+  if (lastUpdateEl)  lastUpdateEl.textContent  = latestIoT.ts ? nowLocalID() : "-";
+  if (phEl)          phEl.textContent          = latestIoT.ph ?? "--";
+  if (phGaugeLabel)  phGaugeLabel.textContent  = latestIoT.ph ?? "--";
+
+  // Status dari Arduino (LAYAK / ASAM_TIDAK_LAYAK / BASA_TIDAK_LAYAK)
+  if (deviceStatusEl) {
+    const s = latestIoT.status || "-";
+    deviceStatusEl.textContent = s;
+    deviceStatusEl.style.color = s === "LAYAK" ? "#065f46" : "#991b1b";
+  }
 
   if (phBadge) {
     const ph = latestIoT.ph;
@@ -430,14 +443,12 @@ function drawGauge(canvas, value, min, max, label) {
   const r = Math.min(W, H * 1.8) / 2 - 6;
   const startAngle = Math.PI, endAngle = 2 * Math.PI;
 
-  // Background arc
   ctx.beginPath();
   ctx.arc(cx, cy, r, startAngle, endAngle);
   ctx.lineWidth = 14;
   ctx.strokeStyle = "#e5e7eb";
   ctx.stroke();
 
-  // Value arc
   const pct = Math.max(0, Math.min(1, (value - min) / (max - min)));
   const valAngle = startAngle + pct * Math.PI;
   let arcColor = "#10b981";
@@ -448,7 +459,6 @@ function drawGauge(canvas, value, min, max, label) {
   ctx.strokeStyle = arcColor;
   ctx.stroke();
 
-  // Needle
   const needleAngle = startAngle + pct * Math.PI;
   ctx.beginPath();
   ctx.moveTo(cx, cy);
@@ -457,13 +467,11 @@ function drawGauge(canvas, value, min, max, label) {
   ctx.strokeStyle = "#374151";
   ctx.stroke();
 
-  // Center dot
   ctx.beginPath();
   ctx.arc(cx, cy, 5, 0, 2 * Math.PI);
   ctx.fillStyle = "#374151";
   ctx.fill();
 
-  // Labels
   ctx.font = "10px sans-serif";
   ctx.fillStyle = "#6b7280";
   ctx.textAlign = "center";
@@ -510,35 +518,76 @@ function pushChartPoint(chartObj, value) {
 }
 
 // ================= MQTT =================
+// Disesuaikan dengan Arduino:
+// broker  : t2ffd5ca.ala.asia-southeast1.emqxsl.com  (port WSS 8084)
+// user    : GWS
+// pass    : GWS123
+// clientId: GWS_ESP32_01
+// topic   : gws/device/GWS_ESP32_01/sensors
+// topic alert: gws/device/GWS_ESP32_01/alert
 
-const mqttOptions = { username:"sofia_esp32", password:"sofia123", clean:true, connectTimeout:4000, reconnectPeriod:3000 };
-const MQTT_BROKER_URL = "wss://h6c5ea94.ala.asia-southeast1.emqxsl.com:8084/mqtt";
-const DEVICE_ID = "sofia_esp32";
-const TOPIC_SENSORS = `aircek/${DEVICE_ID}/sensors`;
+const MQTT_BROKER_URL = "wss://t2ffd5ca.ala.asia-southeast1.emqxsl.com:8084/mqtt";
+const DEVICE_ID       = "GWS_ESP32_01";
+const TOPIC_SENSORS   = `gws/device/${DEVICE_ID}/sensors`;
+const TOPIC_ALERT     = `gws/device/${DEVICE_ID}/alert`;
+
+const mqttOptions = {
+  username: "GWS",
+  password: "GWS123",
+  clean: true,
+  connectTimeout: 4000,
+  reconnectPeriod: 3000,
+  clientId: "web_" + Math.random().toString(16).substr(2, 8) // unik agar tidak bentrok dengan ESP32
+};
 
 let mqttClient = null;
 
 function connectMQTT() {
   const brokerText = document.getElementById("mqttBrokerText");
   if (brokerText) brokerText.textContent = MQTT_BROKER_URL;
+
+  const deviceText = document.getElementById("deviceIdText");
+  if (deviceText) deviceText.textContent = DEVICE_ID;
+
   setMQTTStatus("CONNECTING");
   mqttClient = mqtt.connect(MQTT_BROKER_URL, mqttOptions);
-  mqttClient.on("connect", () => { setMQTTStatus("CONNECTED"); mqttClient.subscribe([TOPIC_SENSORS], err => { if (err) showToast("Gagal subscribe topic IoT","error"); }); });
+
+  mqttClient.on("connect", () => {
+    setMQTTStatus("CONNECTED");
+    // Subscribe topic sensor DAN alert dari Arduino
+    mqttClient.subscribe([TOPIC_SENSORS, TOPIC_ALERT], err => {
+      if (err) showToast("Gagal subscribe topic IoT", "error");
+      else showToast("Terhubung ke perangkat IoT", "success");
+    });
+  });
+
   mqttClient.on("reconnect", () => setMQTTStatus("CONNECTING"));
-  mqttClient.on("close", () => setMQTTStatus("DISCONNECTED"));
-  mqttClient.on("error", () => setMQTTStatus("DISCONNECTED"));
+  mqttClient.on("close",     () => setMQTTStatus("DISCONNECTED"));
+  mqttClient.on("error",     () => setMQTTStatus("DISCONNECTED"));
+
   mqttClient.on("message", (topic, payload) => {
-    if (topic !== TOPIC_SENSORS) return;
     let msg;
-    try { msg = JSON.parse(payload.toString()); } catch { showToast("Payload IoT bukan JSON valid","warning"); return; }
-    latestIoT.deviceId = msg.deviceId || DEVICE_ID;
-    if (typeof msg.ph === "number") latestIoT.ph = msg.ph;
-    if (typeof msg.lat === "number") latestIoT.lat = msg.lat;
-    if (typeof msg.lng === "number") latestIoT.lng = msg.lng;
-    latestIoT.ts = msg.ts || Date.now();
-    updateRealtimeCards();
-    pushChartPoint(phChartObj, latestIoT.ph);
-    updateReportPreview();
+    try { msg = JSON.parse(payload.toString()); } catch { showToast("Payload IoT bukan JSON valid", "warning"); return; }
+
+    if (topic === TOPIC_SENSORS) {
+      // Format Arduino: { "device":"GWS", "ph":7.20, "status":"LAYAK" }
+      // Key "device" dipakai Arduino, kita mapping ke deviceId website
+      latestIoT.deviceId = msg.device || DEVICE_ID;
+      if (typeof msg.ph === "number") latestIoT.ph = msg.ph;
+      latestIoT.status = msg.status || null;
+      latestIoT.ts = Date.now();
+
+      updateRealtimeCards();
+      pushChartPoint(phChartObj, latestIoT.ph);
+      updateReportPreview();
+    }
+
+    if (topic === TOPIC_ALERT) {
+      // Peringatan dari Arduino jika air tidak layak
+      const alertMsg = msg.warning || "PERINGATAN dari perangkat IoT";
+      const phVal    = typeof msg.ph === "number" ? ` (pH: ${msg.ph})` : "";
+      showToast(`⚠️ ${alertMsg}${phVal}`, "warning");
+    }
   });
 }
 
@@ -552,28 +601,35 @@ function reconnectMQTT() {
 function runAIFromLatestIoT() {
   const parts = [];
   if (typeof latestIoT.ph === "number") parts.push(`pH ${latestIoT.ph}`);
-  if (parts.length === 0) { showToast("Belum ada data IoT untuk dianalisis","warning"); return; }
+  if (parts.length === 0) { showToast("Belum ada data IoT untuk dianalisis", "warning"); return; }
 
-  const query = parts.join(", ");
+  const query  = parts.join(", ");
   const aiText = AIR_AI(query);
 
   const out = document.getElementById("aiLogicOutput");
-  if (out) { out.classList.remove("ai-output-placeholder"); out.innerHTML = aiText.replace(/\n/g,"<br>"); }
+  if (out) { out.classList.remove("ai-output-placeholder"); out.innerHTML = aiText.replace(/\n/g, "<br>"); }
 
   const isLayak = !aiText.includes("TIDAK LAYAK");
-  const circle = document.getElementById("aiStatusCircle");
-  const icon = document.getElementById("aiStatusIcon");
+  const circle       = document.getElementById("aiStatusCircle");
+  const icon         = document.getElementById("aiStatusIcon");
   const aiStatusText = document.getElementById("aiStatusText");
-  const aiScoreText = document.getElementById("aiScoreText");
-  const aiConfidenceText = document.getElementById("aiConfidenceText");
+  const aiScoreText  = document.getElementById("aiScoreText");
+  const aiConfText   = document.getElementById("aiConfidenceText");
   const aiLastParams = document.getElementById("aiLastParams");
 
-  if (circle) { circle.className = "ai-status-circle " + (isLayak ? "layak" : "tidak"); }
-  if (icon) { icon.className = isLayak ? "fas fa-check" : "fas fa-times"; }
+  if (circle)       circle.className = "ai-status-circle " + (isLayak ? "layak" : "tidak");
+  if (icon)         icon.className   = isLayak ? "fas fa-check" : "fas fa-times";
   if (aiStatusText) aiStatusText.textContent = isLayak ? "LAYAK KONSUMSI" : "TIDAK LAYAK";
-  if (aiScoreText) { const m = aiText.match(/Skor Kualitas Air:\s*(\d+)\/100/i); aiScoreText.textContent = m ? `${m[1]}/100` : "-"; }
-  if (aiConfidenceText) { const m = aiText.match(/Tingkat Keyakinan Analisis:\s*(.+)/i); aiConfidenceText.textContent = m ? m[1].trim() : "-"; }
-  if (aiLastParams) aiLastParams.innerHTML = `Device: <b>${latestIoT.deviceId}</b><br>pH: <b>${latestIoT.ph ?? "-"}</b><br>GPS: <b>${latestIoT.lat ?? "-"}</b>, <b>${latestIoT.lng ?? "-"}</b>`;
+  if (aiScoreText)  { const m = aiText.match(/Skor Kualitas Air:\s*(\d+)\/100/i); aiScoreText.textContent = m ? `${m[1]}/100` : "-"; }
+  if (aiConfText)   { const m = aiText.match(/Tingkat Keyakinan Analisis:\s*(.+)/i); aiConfText.textContent = m ? m[1].trim() : "-"; }
+
+  // Tampilkan info device dari Arduino (tidak ada lat/lng karena Arduino tidak kirim)
+  if (aiLastParams) {
+    aiLastParams.innerHTML =
+      `Device: <b>${latestIoT.deviceId}</b><br>` +
+      `pH: <b>${latestIoT.ph ?? "-"}</b><br>` +
+      `Status IoT: <b>${latestIoT.status ?? "-"}</b>`;
+  }
 
   updateReportPreview(aiText);
 }
@@ -581,23 +637,32 @@ function runAIFromLatestIoT() {
 // ================= REPORT =================
 
 function fillFromIoT() {
-  const ph = document.getElementById("reportPH");
+  const ph  = document.getElementById("reportPH");
   const dev = document.getElementById("reportDeviceId");
+  // Arduino tidak kirim lat/lng, kosongkan saja
   const lat = document.getElementById("reportLat");
   const lng = document.getElementById("reportLng");
+
   if (dev) dev.value = latestIoT.deviceId || DEVICE_ID;
-  if (ph && typeof latestIoT.ph === "number") ph.value = latestIoT.ph;
-  if (lat && typeof latestIoT.lat === "number") lat.value = latestIoT.lat;
-  if (lng && typeof latestIoT.lng === "number") lng.value = latestIoT.lng;
+  if (ph  && typeof latestIoT.ph === "number") ph.value = latestIoT.ph;
+  if (lat) lat.value = "";
+  if (lng) lng.value = "";
   updateReportPreview();
 }
 
 function fillGPS() {
-  if (!navigator.geolocation) { showToast("Browser tidak mendukung geolocation","error"); return; }
+  if (!navigator.geolocation) { showToast("Browser tidak mendukung geolocation", "error"); return; }
   navigator.geolocation.getCurrentPosition(
-    pos => { const lat=document.getElementById("reportLat"); const lng=document.getElementById("reportLng"); if(lat) lat.value=pos.coords.latitude; if(lng) lng.value=pos.coords.longitude; showToast("GPS berhasil diambil","success"); updateReportPreview(); },
-    () => showToast("Gagal mengambil GPS","warning"),
-    { enableHighAccuracy:true, timeout:8000 }
+    pos => {
+      const lat = document.getElementById("reportLat");
+      const lng = document.getElementById("reportLng");
+      if (lat) lat.value = pos.coords.latitude;
+      if (lng) lng.value = pos.coords.longitude;
+      showToast("GPS berhasil diambil", "success");
+      updateReportPreview();
+    },
+    () => showToast("Gagal mengambil GPS", "warning"),
+    { enableHighAccuracy: true, timeout: 8000 }
   );
 }
 
@@ -609,13 +674,24 @@ function updateReportPreview(aiTextOptional) {
 }
 
 function buildReportPayload(aiTextOptional) {
-  const deviceId = document.getElementById("reportDeviceId")?.value?.trim() || DEVICE_ID;
-  const ph = parseFloat(document.getElementById("reportPH")?.value);
+  const deviceId  = document.getElementById("reportDeviceId")?.value?.trim() || DEVICE_ID;
+  const ph        = parseFloat(document.getElementById("reportPH")?.value);
   const condition = document.getElementById("reportCondition")?.value?.trim() || "";
-  const notes = document.getElementById("reportNotes")?.value?.trim() || "";
-  const lat = parseFloat(document.getElementById("reportLat")?.value);
-  const lng = parseFloat(document.getElementById("reportLng")?.value);
-  return { deviceId, ts:Date.now(), sensors:{ ph:Number.isFinite(ph)?ph:null }, gps:{ lat:Number.isFinite(lat)?lat:null, lng:Number.isFinite(lng)?lng:null }, condition, notes, ai_summary:aiTextOptional||null };
+  const notes     = document.getElementById("reportNotes")?.value?.trim() || "";
+  const lat       = parseFloat(document.getElementById("reportLat")?.value);
+  const lng       = parseFloat(document.getElementById("reportLng")?.value);
+
+  return {
+    deviceId,
+    ts: Date.now(),
+    sensors: { ph: Number.isFinite(ph) ? ph : null },
+    // Status langsung dari Arduino disertakan juga
+    iot_status: latestIoT.status || null,
+    gps: { lat: Number.isFinite(lat) ? lat : null, lng: Number.isFinite(lng) ? lng : null },
+    condition,
+    notes,
+    ai_summary: aiTextOptional || null
+  };
 }
 
 // ================= INIT =================
@@ -629,7 +705,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const chatInput = document.getElementById("chatInput");
   if (chatInput) {
-    chatInput.addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+    chatInput.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
     setTimeout(() => chatInput.focus(), 500);
   }
 
@@ -637,16 +713,16 @@ document.addEventListener("DOMContentLoaded", () => {
   if (form) {
     form.addEventListener("submit", async e => {
       e.preventDefault();
-      const aiOut = document.getElementById("aiLogicOutput");
+      const aiOut  = document.getElementById("aiLogicOutput");
       const aiText = aiOut ? aiOut.innerText : null;
       const payload = buildReportPayload(aiText);
       updateReportPreview(aiText);
       try {
-        const res = await fetch("/api/water-reports", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload) });
+        const res = await fetch("/api/water-reports", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         if (!res.ok) throw new Error("HTTP " + res.status);
-        showToast("Laporan berhasil dikirim ke admin","success");
+        showToast("Laporan berhasil dikirim ke admin", "success");
       } catch {
-        showToast("Gagal kirim laporan. Cek endpoint backend /api/water-reports","error");
+        showToast("Gagal kirim laporan. Cek endpoint backend /api/water-reports", "error");
       }
     });
   }
